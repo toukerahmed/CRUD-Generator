@@ -19,6 +19,16 @@ A simple yet powerful Laravel CRUD Generator to quickly scaffold Models, Migrati
 
 ## 🛠️ Setup Instructions
 
+## 🚀 Requirements
+
+Before getting started, make sure your local environment includes:
+	•	PHP >= 8.1
+	•	Composer
+	•	Laravel 10
+	•	MySQL or compatible database
+
+## 🛠️ Setup Instructions
+
 1. **Clone the Repository:**
 
 ```bash
