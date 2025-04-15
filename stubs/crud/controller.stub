@@ -1,0 +1,68 @@
+<?php
+
+namespace {{ controllerNamespace }};
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use {{ modelNamespace }}\{{ modelName }};
+use {{ requestNamespace }}\{{ modelName }}Request;
+use {{ resourceNamespace }}\{{ modelName }}Resource;
+
+class {{ modelName }}Controller extends Controller
+{
+    public function index()
+    {
+        ${{ pluralModelVar }} = {{ modelName }}::all();
+        return view('{{ viewPath }}.index', [
+            '{{ pluralModelVar }}' => ${{ pluralModelVar }},
+            'fields' => [
+                {{ fieldsForView }}
+            ]
+        ]);
+    }
+
+    public function create()
+    {
+        return view('{{ viewPath }}.create', [
+            'modelVariable' => '{{ modelName }}',
+            'fields' => [
+                {{ fieldsForView }}
+            ]
+        ]);
+    }
+
+    public function store({{ modelName }}Request $request)
+    {
+        {{ modelName }}::create($request->validated());
+        return redirect()->route('{{ pluralModelVar }}.index')->with('success', '{{ modelName }} created successfully.');
+    }
+
+    public function show(\{{ modelNamespace }}\{{ modelName }} ${{ modelVar }})
+    {
+        return view('{{ viewPath }}.show', [
+            '{{ modelVar }}' => ${{ modelVar }}
+        ]);
+    }
+
+    public function edit(\{{ modelNamespace }}\{{ modelName }} ${{ modelVar }})
+    {
+        return view('{{ viewPath }}.edit', [
+            '{{ modelVar }}' => ${{ modelVar }},
+            'fields' => [
+                {{ fieldsForView }}
+            ]
+        ]);
+    }
+
+    public function update({{ modelName }}Request $request, \{{ modelNamespace }}\{{ modelName }} ${{ modelVar }})
+    {
+        ${{ modelVar }}->update($request->validated());
+        return redirect()->route('{{ pluralModelVar }}.index')->with('success', '{{ modelName }} updated successfully.');
+    }
+
+    public function destroy(\{{ modelNamespace }}\{{ modelName }} ${{ modelVar }})
+    {
+        ${{ modelVar }}->delete();
+        return redirect()->route('{{ pluralModelVar }}.index')->with('success', '{{ modelName }} deleted successfully.');
+    }
+}
