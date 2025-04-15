@@ -28,3 +28,4 @@ Route::get('/', function () {
 
     return view('welcome', ['models' => $models]);
 });
+Route::resource('admin/projects', \App\Http\Controllers\Admin\ProjectController::class);
