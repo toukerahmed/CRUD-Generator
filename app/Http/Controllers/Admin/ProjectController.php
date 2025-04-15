@@ -10,9 +10,9 @@ use App\Http\Resources\Admin\ProjectResource;
 
 class ProjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::all();
+        $projects = Project::filter($request->query())->get();
         return view('admins.project.index', [
             'projects' => $projects,
             'fields' => [

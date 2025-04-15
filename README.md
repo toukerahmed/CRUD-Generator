@@ -11,6 +11,7 @@ A simple yet powerful Laravel CRUD Generator to quickly scaffold Models, Migrati
   - Models in nested namespaces
   - Blade views with field components
   - Enum field generation
+  - Eloquent scopes and query filters
   - Relationship methods (e.g., `hasMany`)
 - Clean architecture: Model, Controller, Request, Resource, Views, Routes
 
@@ -59,8 +60,6 @@ php artisan make:crud Admin/Project \
 --fields='name:string,status:enum(open,closed)' \
 --relations='tasks:hasMany'
 
-After generating a new CRUD, don’t forget to run:
-php artisan migrate
 
 This will generate:
 	•	app/Models/Admin/Project.php

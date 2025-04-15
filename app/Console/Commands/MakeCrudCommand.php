@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 
@@ -24,17 +25,24 @@ class MakeCrudCommand extends Command
         $resourceNamespace = 'App\\Http\\Resources' . ($namespacePath ? '\\' . $namespacePath : '');
 
         $viewPath = collect(explode('\\', $modelInput))
-        ->map(fn ($part, $i) => $i === 0
-            ? Str::kebab(Str::plural(Str::snake($part))) // pluralize only the first (e.g. admin)
-            : Str::kebab(Str::snake($part)))             // singular for model name (e.g. order)
-        ->implode('.');
+            ->map(fn ($part, $i) => $i === 0
+                ? Str::kebab(Str::plural(Str::snake($part))) // pluralize only the first (e.g. admin)
+                : Str::kebab(Str::snake($part)))             // singular for model name (e.g. order)
+            ->implode('.');
         $viewFolder = str_replace('.', '/', $viewPath); // used for folder structure
+
+        $fields = $this->option('fields') ? $this->parseFields($this->option('fields')) : [];
+        $relations = $this->option('relations') ? explode(',', $this->option('relations')) : [];
+
+        $scopes = collect($fields)
+            ->map(function ($field) {
+                $fieldName = explode(':', $field)[0];
+                return "->when(\$filters['$fieldName'] ?? null, fn(\$q, \$value) => \$q->where('$fieldName', \$value))";
+            })->implode("\n        ");
 
         $modelVar = Str::camel($modelName);
         $pluralModelVar = Str::plural($modelVar);
         $tableName = Str::snake(Str::pluralStudly($modelName));
-        $fields = $this->option('fields') ? $this->parseFields($this->option('fields')) : [];
-        $relations = $this->option('relations') ? explode(',', $this->option('relations')) : [];
 
         $fillable = collect($fields)->map(fn($f) => "'" . explode(':', $f)[0] . "'")->implode(', ');
         $columns = collect($fields)->map(fn($f) => $this->generateColumn($f))->implode("\n            ");
@@ -61,6 +69,7 @@ class MakeCrudCommand extends Command
             '{{ requestNamespace }}' => $requestNamespace,
             '{{ resourceNamespace }}' => $resourceNamespace,
             '{{ viewPath }}' => $viewPath,
+            '{{ scopes }}' => $scopes,
         ];
 
         $stubPath = base_path('stubs/crud');
@@ -82,6 +91,8 @@ class MakeCrudCommand extends Command
         $this->addApiRoute($modelName, $controllerNamespace);
         $this->addWebRoute($modelInput);
 
+        Artisan::call('migrate');
+        $this->info("✅ Database migrated successfully.");
         $this->info("\n🎉 CRUD for $modelName generated successfully.");
     }
 

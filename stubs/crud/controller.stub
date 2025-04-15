@@ -10,9 +10,9 @@ use {{ resourceNamespace }}\{{ modelName }}Resource;
 
 class {{ modelName }}Controller extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        ${{ pluralModelVar }} = {{ modelName }}::all();
+        ${{ pluralModelVar }} = {{ modelName }}::filter($request->query())->get();
         return view('{{ viewPath }}.index', [
             '{{ pluralModelVar }}' => ${{ pluralModelVar }},
             'fields' => [
