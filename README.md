@@ -59,6 +59,8 @@ php artisan make:crud Admin/Project \
 --fields='name:string,status:enum(open,closed)' \
 --relations='tasks:hasMany'
 
+After generating a new CRUD, don’t forget to run:
+php artisan migrate
 
 This will generate:
 	•	app/Models/Admin/Project.php
@@ -92,3 +94,12 @@ resources/views/
         ├── create.blade.php
         ├── edit.blade.php
         └── show.blade.php
+
+
+🧠 Tips
+	•	Enum fields are supported using field:type(option1,option2,...)
+	•	Example: status:enum(active,inactive)
+	•	Nested namespaces are supported using / or \\:
+	•	Admin/Order or Admin\\Order
+	•	Views will be generated in kebab-case plural format based on model path
+	•	e.g., Admin/Order → resources/views/admin/orders/
