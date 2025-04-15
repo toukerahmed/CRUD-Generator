@@ -28,8 +28,3 @@ Route::get('/', function () {
 
     return view('welcome', ['models' => $models]);
 });
-
-Route::resource('user/orders', \App\Http\Controllers\User\OrderController::class);
-Route::resource('user/order1s', \App\Http\Controllers\User\Order1Controller::class);
-Route::resource('tasks', \App\Http\Controllers\TaskController::class);
-Route::resource('user/task1s', \App\Http\Controllers\User\Task1Controller::class);
