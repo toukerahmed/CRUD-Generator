@@ -60,23 +60,23 @@ You can generate CRUD for any model with a single Artisan command.
 
 ✅ Basic CRUD Generation
 
-php artisan make:crud Project \
---fields='name:string,status:enum(open,closed)' \
---relations='tasks:hasMany'
+php artisan make:crud Order \
+--fields='name:string,details:text,status:enum(ordered,received)' \
+--relations='customers:hasMany'
 
 ✅ With Namespaces (e.g., Admin Module)
 
-php artisan make:crud Admin/Project \
---fields='name:string,status:enum(open,closed)' \
---relations='tasks:hasMany'
+php artisan make:crud Admin/Order \
+--fields='name:string,details:text,status:enum(ordered,received)' \
+--relations='customers:hasMany'
 
 
 This will generate:
-	•	app/Models/Admin/Project.php
-	•	app/Http/Controllers/Admin/ProjectController.php
-	•	app/Http/Requests/Admin/ProjectRequest.php
-	•	app/Http/Resources/Admin/ProjectResource.php
-	•	Views in resources/views/admin/projects/
+	•	app/Models/Admin/Order.php
+	•	app/Http/Controllers/Admin/OrderController.php
+	•	app/Http/Requests/Admin/OrderRequest.php
+	•	app/Http/Resources/Admin/OrderResource.php
+	•	Views in resources/views/admin/orders/
 	•	Routes in routes/web.php and/or routes/api.php
 
 📂 Example Output Structure:
@@ -84,21 +84,21 @@ This will generate:
 app/
 ├── Models/
 │   └── Admin/
-│       └── Project.php
+│       └── Order.php
 ├── Http/
 │   ├── Controllers/
 │   │   └── Admin/
-│   │       └── ProjectController.php
+│   │       └── OrderController.php
 │   ├── Requests/
 │   │   └── Admin/
-│   │       └── ProjectRequest.php
+│   │       └── OrderRequest.php
 │   └── Resources/
 │       └── Admin/
-│           └── ProjectResource.php
+│           └── OrderResource.php
 
 resources/views/
 └── admin/
-    └── projects/
+    └── orders/
         ├── index.blade.php
         ├── create.blade.php
         ├── edit.blade.php
